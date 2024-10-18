@@ -42,7 +42,7 @@
 </template>
 
 <script setup>
-const Promt = useState('chat', () => [])
+const Promt = useState('chat', () => null)
 const Mess = useState('mess', () => [])
 const loading = useState('loading', () => false)
 
