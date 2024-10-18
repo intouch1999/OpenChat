@@ -1,6 +1,9 @@
 import Groq from "groq-sdk";
-
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+const config = useRuntimeConfig();
+// const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+const groq = new Groq({ 
+  apiKey: config.groqApiKey // ใช้ key จาก environment variable
+});
 
 export default defineEventHandler(async (event) => {
   // รับ body ที่ถูกส่งมาจาก front-end
