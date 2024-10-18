@@ -1,21 +1,9 @@
 <template>
-    <div class="container bg-secondary mx-auto w-3/4 p-4 rounded-lg">
+    <div class="container bg-secondary mx-auto w-11/12 md:w-3/4 p-4 rounded-lg h-screen">
         <div class="text-center text-2xl font-bold mb-4">
             <span>Build for GroqAi</span>
         </div>
-        <div class="relative flex items-center justify-center">
-    <textarea :disabled="loading" v-model="Promt" @keydown="disableEnter($event)" @keyup.enter="handlesendMess()"
-      input="adjustHeight($event.target)" style="height: auto;" type="text"
-      class="overflow-hidden input input-bordered input-sm input-primary w-full max-w-xs pr-12 resize-none"
-      placeholder="Enter your message..." />
-    <button :disabled="loading" @click="handlesendMess()" class="ml-2 justify-center btn btn-sm bg-transparent border-none">
-      <span v-if="loading" class="loading loading-spinner loading-xs"></span>
-      <svg v-else  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-        class="size-6">
-        <path stroke-linecap="round" stroke-linejoin="round" d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-      </svg>
-    </button>
-  </div>
+
         <div v-for="(i, index) in Mess.slice().reverse()" :key="index" class="">
             <div class="chat chat-end">
                 <div class="chat-header">
@@ -39,6 +27,24 @@
             </div>
         </div>
     </div>
+    <div class="fixed bottom-0 inset-x-0 bg-primary w-full mx-auto rounded-t-3xl  ">
+        <div class="flex justify-center flex-row w-full">
+            <div class="m-2 flex flex-row align-middle items-center justify-center w-3/4">
+    <textarea :disabled="loading" v-model="Promt" @keyup="justEnter($event)"
+      input="adjustHeight($event.target)" style="height: auto;" type="text"
+      class="overflow-hidden input input-bordered input-xs w-full input-primary p-2 resize-none"
+      placeholder="Enter your message..." />
+    <button :disabled="loading || !Promt" @click="handlesendMess()" class="ml-2 justify-center btn btn-sm bg-secondary border-none">
+      <span v-if="loading" class="loading loading-spinner loading-xs"></span>
+      <svg v-else  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        class="size-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+      </svg>
+    </button> 
+</div>
+  </div>
+  </div>
+
 </template>
 
 <script setup>
@@ -58,14 +64,15 @@ const initResize = (element) => {
     });
 };
 
-const disableEnter = (event) => {
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        console.log('Enter key disabled');
-      }
-    }
+const justEnter = (event) => {
+    const isEnterPressed = event.key === 'Enter' && !event.shiftKey && event.target.value !== '';
+    const isResolutionAbove768 = window.innerWidth > 768;
 
-// แปลง Mess เป็นรูปแบบที่เหมาะสมสำหรับส่งเป็น history
+    if (isEnterPressed && isResolutionAbove768) {
+        handlesendMess();
+    }
+};
+
 const createHistory = () => {
     return Mess.value.map(msg => ({
         role: 'human',
@@ -87,7 +94,7 @@ const handlesendMess = async () => {
         method: 'POST',
         body: { 
             message: Promt.value,
-            history: createHistory() // เพิ่มการส่ง history
+            history: createHistory()
         }
     })
 
