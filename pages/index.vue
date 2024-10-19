@@ -1,27 +1,28 @@
 <template>
     <div class="container bg-secondary mx-auto w-11/12 md:w-3/4 p-4 rounded-lg mb-20 min-h-[75vh] h-auto overflow-auto">
         <div class=" bg-primary flex justify-start items-end mb-8 rounded-b-3xl">
-            <div class=" absolute top-20 buttom-0 overflow-visible  rounded-full px-4 py-2 bg-primary z-50">
-                <span class=" bg-primary rounded-full px-4 py-2 text-primary-content font-bold text-xl">{{ displayText
+            <div class=" absolute top-12 buttom-0 overflow-visible  rounded-full px-4 py-2 bg-primary z-50">
+                <span class=" bg-primary rounded-full md:px-2 text-primary-content font-bold text-sm md:text-xl">{{ displayText
                     }}<span class="inline-block w-2 h-0.5 bg-black rounded-full blink-animation "></span></span>
             </div>
         </div>
         <div v-for="(i, index) in Mess.slice().reverse()" :key="index" class="">
             <div class="chat chat-end">
-                <div class="chat-header mr-2">
+                <div class="chat-header mr-2 font-mono">
                     You!
                 </div>
                 <div class="chat-bubble chat-bubble-primary">
                     <div>{{ i.i }}</div>
                 </div>
-                <div class="chat-footer opacity-50">{{ i.time }}</div>
+                <div class="chat-footer opacity-75">{{ i.time }}</div>
             </div>
             <div class="chat chat-start">
-                <div class="chat-header ml-2">
+                <div class="chat-header ml-2 font-mono">
                     Ai!
                 </div>
                 <div class="chat-bubble w-full flex justify-center">
-                    <textarea v-model="i.u" readonly
+                    <div v-if="!i.u" class="loading loading-dots loading-xs md:loading-md"></div>
+                    <textarea v-else v-model="i.u" readonly
                         class="p-2 w-full bg-transparent resize-none border-none focus:outline-none" ref="textareaRef"
                         @vue:mounted="initResize($event.target)"></textarea>
                 </div>
@@ -37,7 +38,7 @@
                     class="max-h-72 input input-bordered input-sm md:input-lg w-full input-primary p-2 resize-none"
                     placeholder="Enter your message..." />
                 <button :disabled="loading || !Promt" @click="handlesendMess()"
-                    class="absolute disabled:opacity-50 hover:bg-white action:scale-110 transition-colors duration-200 -right-10 md:-right-12 bottom-2 ml-2 mb-1 flex items-center justify-center rounded-full bg-secondary border-none w-10 h-10 md:w-12 md:h-12">
+                    class="absolute disabled:opacity-50 hover:bg-white action:scale-110 transition-colors duration-200 -right-10 sm:-right-12 md:-right-14 bottom-2 ml-2 mb-1 flex items-center justify-center rounded-full bg-secondary border-none w-10 h-10 md:w-12 md:h-12">
 
                     <div v-if="loading" class="flex items-center justify-center">
                         <span class="loading loading-spinner loading-xs md:loading-md"></span>
