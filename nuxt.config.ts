@@ -9,7 +9,7 @@ export default defineNuxtConfig({
     
     // ตัวแปรที่ใช้ได้ทั้ง client และ server
     public: {
-      apiBase: process.env.API_BASE_URL
+      apiBase: process.env.GROQ_API_KEY
     }
   }
 })
