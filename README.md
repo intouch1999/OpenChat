@@ -1,5 +1,8 @@
 # Open Chat
 
+DEMO Link: [page]([https://codereadygo.com/intouch-code/](https://open-chat-gamma-ten.vercel.app/))
+
+
 > A project built to learn Nuxt.js while connecting to the Groq API for AI functionalities.
 
 ## Overview
